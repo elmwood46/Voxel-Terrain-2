@@ -23,16 +23,25 @@ public partial class ChunkManager : Node
 
 	public override void _Ready()
 	{
+		if (Engine.IsEditorHint()) return;
 		Instance = this;
 
-		_chunks = GetParent().GetChildren().Where(child => child is Chunk).Select(child => child as Chunk).ToList();
+		_chunks = new List<Chunk>(_width * _width);
+		//_chunks =  GetParent().GetChildren().Where(child => child is Chunk).Select(child => child as Chunk).ToList()
 
-		for (int i = _chunks.Count; i < _width * _width; i++)
+		for (int i = 0; i < _width * _width; i++)
 		{
 			var chunk = ChunkScene.Instantiate<Chunk>();
 			GetParent().CallDeferred(Node.MethodName.AddChild, chunk);
 			_chunks.Add(chunk);
 		}
+
+/*
+
+		Vector2I playerChunk;
+		playerChunk = !SaveManager.Instance.SaveFileExists() ? new Vector2I(0,0)
+		 = new Vector2I(Mathf.FloorToInt(Player.Instance.Position.X),Mathf.FloorToInt(Player.Instance.Position.Z));
+*/
 
 		for (int x = 0; x < _width; x++)
 		{
@@ -121,11 +130,8 @@ public partial class ChunkManager : Node
 
 						chunk.CallDeferred(nameof(Chunk.SetChunkPosition), newPosition);
 					}
-
-					Thread.Sleep(100);
 				}
 			}
-
 			Thread.Sleep(100);
 		}
 	}

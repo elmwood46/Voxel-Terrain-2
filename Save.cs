@@ -34,6 +34,7 @@ public partial class Save
         [Key(0)] public (float,float,float) PlayerPosition { get; set; }
         [Key(1)] public float HeadRotation { get; set; }
         [Key(2)] public Dictionary<(int,int), int[]> Chunks { get; set; } = new Dictionary<(int,int),int[]>();
+        [Key(3)] public HashSet<(int,int)> allChunks { get; set; } = new HashSet<(int,int)>();
     }
 
     public SaveData Data { get; private set; }
@@ -70,10 +71,12 @@ public partial class Save
             System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(SavePath), saveData);
 
             GD.Print($"File saved successfully at: {ProjectSettings.GlobalizePath(SavePath)}");
+            DebugManager.Log($"File saved successfully at: {ProjectSettings.GlobalizePath(SavePath)}");
         }
         catch (Exception e)
         {
             GD.PrintErr($"Failed to save data: {e.Message}");
+            DebugManager.Log($"Failed to save data: {e.Message}");
         }
     }
 
@@ -83,6 +86,7 @@ public partial class Save
         if (!SaveFileExists())
         {
             GD.Print("Called LoadSave(): No save file found. Setting up new save data.");
+            DebugManager.Log("Called LoadSave(): No save file found. Setting up new save data.");
             Data = new SaveData();
             return null;
         }
@@ -115,7 +119,8 @@ public partial class Save
     {
         int[] blockList = blocks.Cast<Block>().Select(block => ParseBlockToInt(block)).ToArray();
         Data.Chunks[(position.X,position.Y)] = blockList;
-        GD.Print($"Stored chunk at {position}");
+        //GD.Print($"Stored chunk at {position}");
+        DebugManager.Log($"Stored chunk at {position}");
     }
 
     public Block[,,] LoadChunkBlocksOrNull(Vector2I position)
@@ -138,7 +143,8 @@ public partial class Save
             }
         }
 
-        GD.Print($"Loaded chunk at {position}");
+        //GD.Print($"Loaded chunk at {position}");
+        DebugManager.Log($"Loaded chunk at {position}");
         return blocks;
     }
 }

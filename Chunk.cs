@@ -58,6 +58,7 @@ public partial class Chunk : StaticBody3D
 
 	public void Generate()
 	{
+		if (Engine.IsEditorHint()) return;
 
 		//int playerChunkX = Mathf.FloorToInt(_playerPosition.X / Chunk.Dimensions.X);
 		//int playerChunkZ = Mathf.FloorToInt(_playerPosition.Z / Chunk.Dimensions.Z);

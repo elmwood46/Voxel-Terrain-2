@@ -14,6 +14,8 @@ public partial class Player : CharacterBody3D
 
 	private float _cameraXRotation;
 
+	private Timer spawnTimer;
+
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public static Player Instance { get; private set; }
@@ -26,10 +28,15 @@ public partial class Player : CharacterBody3D
 			this.Position = SaveManager.Instance.LoadPlayerPosition();
 			this.Head.RotateY(SaveManager.Instance.State.Data.HeadRotation);
 		} else {
-			this.Position = new Vector3(0, 32, 0);
+			this.Position = new Vector3(0, 10, 0);
 		}
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		spawnTimer = new Timer();
+		AddChild(spawnTimer);
+		spawnTimer.WaitTime = 0.1f;
+		spawnTimer.OneShot = true;
+		spawnTimer.Start();
 	}
 
 	public override void _Input(InputEvent @event)
@@ -51,6 +58,8 @@ public partial class Player : CharacterBody3D
 
 	public override void _Process(double delta)
 	{
+		if (!spawnTimer.IsStopped()) return;
+
 		if (RayCast.IsColliding() && RayCast.GetCollider() is Chunk chunk)
 		{
 			BlockHighlight.Visible = true;
@@ -77,6 +86,8 @@ public partial class Player : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!spawnTimer.IsStopped()) return;
+
 		var velocity = Velocity;
 
 		if (!IsOnFloor())

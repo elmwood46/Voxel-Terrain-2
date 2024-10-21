@@ -20,3 +20,4 @@ C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\MessagePack.An
 C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Microsoft.NET.StringTools.dll
 C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\MessagePack.ImmutableCollection.dll
 C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.sourcelink.json

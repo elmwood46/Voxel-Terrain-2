@@ -1,3 +1,7 @@
+Label
+RichTextLabel
+MarginContainer
+Control
 Node
 DirectionalLight3D
 WorldEnvironment
