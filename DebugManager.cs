@@ -35,6 +35,7 @@ public partial class DebugManager : Control
     
     public override void _Ready()
     {
+
         #if DEBUG
             debugLog += "Debug build\n";
         # else 
