@@ -1,0 +1,22 @@
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Voxel Terrain 2.deps.json
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Voxel Terrain 2.runtimeconfig.json
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Voxel Terrain 2.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Voxel Terrain 2.pdb
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.csproj.AssemblyReference.cache
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.AssemblyInfoInputs.cache
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.AssemblyInfo.cs
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.csproj.CoreCompileInputs.cache
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Te.478897C9.Up2Date
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\refint\Voxel Terrain 2.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.pdb
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\Voxel Terrain 2.genruntimeconfig.cache
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\obj\Debug\ref\Voxel Terrain 2.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\MessagePack.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\MessagePack.Annotations.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Microsoft.NET.StringTools.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\MessagePack.ImmutableCollection.dll
+C:\Users\elmwo\Desktop\Voxel Terrain 2\.godot\mono\temp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
