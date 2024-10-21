@@ -1,4 +1,10 @@
 
+## Requires MessagePack:
+```
+dotnet add package MessagePack
+```
+
+
 ### Localised READMEs
  - [简体中文](READMECN.md) (Simplified Chinese)
 
@@ -58,3 +64,4 @@ Click Download ZIP from the 'Code' dropdown.
 
 Enable the plugin in the project settings.
 ![Project image](https://github.com/OrigamiDev-Pete/TODO_Manager/blob/main/addons/Todo_Manager/doc/images/Instruct4.png)
+
