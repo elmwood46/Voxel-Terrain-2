@@ -46,19 +46,10 @@ public partial class DebugManager : Control
         Instance = this;
         ProcessMode = ProcessModeEnum.Always;
 
-        IDebugActionsSection section = GDebugPanel.AddNonCollapsableSection("Section 1");
-        
-        section.AddInfoDynamic(() =>_stopwatch.Elapsed.ToString());
-            
-        IDebugActionsSection section2 = GDebugPanel.AddSection("Section 2");
-        section2.AddInfo("Very info that never ends and never will because");
-        section2.AddInfoDynamic(() => "Very long info dynamic that never ends and never will because");
-        section2.AddButton("Very long button name that never ends", () => GD.Print("Button 2"));
-        section2.AddInt("Very long int name that never ends", val => _int1 = val, () => _int1);
-        section2.AddFloat("Very long float name that never ends", val => _float1 = val, () => _float1);
-        section2.AddEnum("Very long enum name that never ends", val => _enum1 = val, () => _enum1);
-            
-        GDebugPanel.AddSection("Section 3", new ExampleOptionsObject());
+        IDebugActionsSection section1 = GDebugPanel.AddNonCollapsableSection("Section 1");
+        section1.AddInfoDynamic(() =>_stopwatch.Elapsed.ToString());
+        section1.AddInfoDynamic(() => $"PlayerPosition: {Player.Instance.Position}");
+        section1.AddInfoDynamic(() => $"PlayerChunkPosition: {Mathf.FloorToInt(Player.Instance.Position.X/Chunk.Dimensions.X)},{Mathf.FloorToInt(Player.Instance.Position.Z/Chunk.Dimensions.Z)}");
         
         IDebugActionsSection section4 = GDebugPanel.AddSection("Debug Log");
         section4.AddInfoDynamic(() => Instance.debugLog);

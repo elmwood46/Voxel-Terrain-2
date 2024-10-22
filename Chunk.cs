@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 [Tool]
 public partial class Chunk : StaticBody3D
@@ -9,12 +10,6 @@ public partial class Chunk : StaticBody3D
 
 	[Export]
 	public MeshInstance3D MeshInstance { get; set; }
-
-	public  Guid ID {get; private set;}
-
-	public Chunk() {
-		ID = Guid.NewGuid();
-	}
 
 	public static Vector3I Dimensions = new Vector3I(16, 64, 16);
 
@@ -46,6 +41,9 @@ public partial class Chunk : StaticBody3D
 	[Export]
 	public FastNoiseLite Noise { get; set; }
 
+	[Export]
+	public FastNoiseLite WallNoise { get; set; }
+
 	public void SetChunkPosition(Vector2I position)
 	{
 		ChunkManager.Instance.UpdateChunkPosition(this, position, ChunkPosition);
@@ -71,6 +69,11 @@ public partial class Chunk : StaticBody3D
 			return;
 		}
 
+		RandomNumberGenerator rng = new RandomNumberGenerator();
+		rng.Randomize();
+
+		bool genWalls = rng.Randf() < 0.5f;
+
 		// generate the _blocks[] array
 		for (int x = 0; x < Dimensions.X; x++)
 		{
@@ -80,8 +83,8 @@ public partial class Chunk : StaticBody3D
 				{
 					Block block;
 
-					var globalBlockPosition = ChunkPosition * new Vector2I(Dimensions.X, Dimensions.Z) + new Vector2(x, z);
-					var groundHeight = (int)(0.15f*Dimensions.Y * ((Noise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) + 1f) / 2f));
+					var globalBlockPosition = ChunkPosition * new Vector2I(Dimensions.X, Dimensions.Z) + new Vector2I(x, z);
+					var groundHeight = (int)(0.15f * Dimensions.Y * ((Noise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) + 1f) / 2f));
 
 					if (y < groundHeight / 2)
 					{
@@ -94,10 +97,47 @@ public partial class Chunk : StaticBody3D
 					else if (y == groundHeight)
 					{
 						block = BlockManager.Instance.Grass;
+
+						
+						// spawn a tree over a grass block
+						int _margin = 2;
+						if (!genWalls && x > _margin && x < (Dimensions.X - _margin) && z > _margin && z < (Dimensions.Z - _margin)) // chunk margin of 2 blocks
+						{
+							float _xoffset = (float)(x-Dimensions.X/2);
+							float _zoffset = (float)(z-Dimensions.Z/2);
+							_xoffset *= _xoffset;
+							_zoffset *= _zoffset;
+
+							if (rng.Randf() < 0.05/(1+(Mathf.Sqrt(_xoffset+_zoffset)))) // spawn chance
+							{ 
+								GenTree tree = new GenTree();
+								foreach (KeyValuePair<(int,int,int), Block> kvp in tree.Blocks)
+								{
+									Vector3I treeBlockPosition = new Vector3I(x + kvp.Key.Item1, y + kvp.Key.Item2, z + kvp.Key.Item3);
+
+									if (treeBlockPosition.X < Dimensions.X && treeBlockPosition.X >= 0
+									&&  treeBlockPosition.Y < Dimensions.Y && treeBlockPosition.Y >= 0
+									&&  treeBlockPosition.Z < Dimensions.Z && treeBlockPosition.Z >= 0)
+										_blocks[treeBlockPosition.X,treeBlockPosition.Y,treeBlockPosition.Z] = kvp.Value;
+									else DebugManager.Log($"Tree block at {treeBlockPosition} was out of bounds");
+								}
+							}
+						}
 					}
 					else
-					{
-						block = BlockManager.Instance.Air;
+					{	
+						// dont replace tree blocks if they exist
+						if (!(_blocks[x,y,z]==BlockManager.Instance.Leaves||_blocks[x,y,z]==BlockManager.Instance.Trunk)) {
+							// gen walls above ground
+							if (genWalls && y < groundHeight + 3 && WallNoise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) >= 0.95f)
+							{
+								block = BlockManager.Instance.Brick;
+							}
+							else
+							{
+								block = BlockManager.Instance.Air;
+							}
+						} else block = _blocks[x,y,z];
 					}
 
 					_blocks[x, y, z] = block;

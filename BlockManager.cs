@@ -7,17 +7,20 @@ using System.Linq;
 [Tool]
 public partial class BlockManager : Node
 {
-	[Export]
-	public Block Air { get; set; }
 
-	[Export]
-	public Block Stone { get; set; }
+	[Export] public Block Air { get; set; }
 
-	[Export]
-	public Block Dirt { get; set; }
+	[Export] public Block Stone { get; set; }
 
-	[Export]
-	public Block Grass { get; set; }
+	[Export] public Block Dirt { get; set; }
+
+	[Export] public Block Grass { get; set; }
+
+	[Export] public Block Leaves { get; set; }
+
+	[Export] public Block Trunk { get; set; }
+
+	[Export] public Block Brick { get; set; }
 
 	private readonly Dictionary<Texture2D, Vector2I> _atlasLookup = new();
 
@@ -36,7 +39,7 @@ public partial class BlockManager : Node
 	{
 		Instance = this;
 
-		var blockTextures = new Block[] { Air, Stone, Dirt, Grass }.SelectMany(block => block.Textures).Where(texture => texture != null).Distinct().ToArray();
+		var blockTextures = new Block[] { Air, Stone, Dirt, Grass, Leaves, Trunk, Brick }.SelectMany(block => block.Textures).Where(texture => texture != null).Distinct().ToArray();
 
 		for (int i = 0; i < blockTextures.Length; i++)
 		{

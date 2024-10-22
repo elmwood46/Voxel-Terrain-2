@@ -16,7 +16,8 @@ public partial class ChunkManager : Node
 
 	[Export] public PackedScene ChunkScene { get; set; }
 
-	private int _width = 5;
+	// this is the number of chunks rendered in the x and z direction, centered around the player
+	private int _width = 12;
 
 	private Vector3 _playerPosition;
 	private object _playerPositionLock = new();

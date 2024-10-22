@@ -11,7 +11,10 @@ public enum BID
     Air,
     Stone,
     Dirt,
-    Grass
+    Grass,
+    Leaves,
+    Trunk,
+    Brick
 }
 
 public partial class Save
@@ -46,6 +49,9 @@ public partial class Save
         else if (block == BlockManager.Instance.Stone) return (int)BID.Stone;
         else if (block == BlockManager.Instance.Dirt) return (int)BID.Dirt;
         else if (block == BlockManager.Instance.Grass) return (int)BID.Grass;
+        else if (block == BlockManager.Instance.Leaves) return (int)BID.Leaves;
+        else if (block == BlockManager.Instance.Trunk) return (int)BID.Trunk;
+        else if (block == BlockManager.Instance.Brick) return (int)BID.Brick;
         else throw new Exception($"Block {block} not found in BlockManager.");
     }
 
@@ -54,6 +60,9 @@ public partial class Save
         else if (i == (int)BID.Stone) return BlockManager.Instance.Stone;
         else if (i == (int)BID.Dirt) return BlockManager.Instance.Dirt;
         else if (i == (int)BID.Grass) return BlockManager.Instance.Grass;
+        else if (i == (int)BID.Leaves) return BlockManager.Instance.Leaves;
+        else if (i == (int)BID.Trunk) return BlockManager.Instance.Trunk;
+        else if (i == (int)BID.Brick) return BlockManager.Instance.Brick;
         else throw new Exception($"Block {i} not found in BlockManager.");
     }
 
@@ -71,12 +80,14 @@ public partial class Save
             System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(SavePath), saveData);
 
             GD.Print($"File saved successfully at: {ProjectSettings.GlobalizePath(SavePath)}");
-            DebugManager.Log($"File saved successfully at: {ProjectSettings.GlobalizePath(SavePath)}");
+            if (DebugManager.Instance != null)
+                DebugManager.Log($"File saved successfully at: {ProjectSettings.GlobalizePath(SavePath)}");
         }
         catch (Exception e)
         {
             GD.PrintErr($"Failed to save data: {e.Message}");
-            DebugManager.Log($"Failed to save data: {e.Message}");
+            if (DebugManager.Instance != null)
+                DebugManager.Log($"Failed to save data: {e.Message}");
         }
     }
 
@@ -86,7 +97,8 @@ public partial class Save
         if (!SaveFileExists())
         {
             GD.Print("Called LoadSave(): No save file found. Setting up new save data.");
-            DebugManager.Log("Called LoadSave(): No save file found. Setting up new save data.");
+            if (DebugManager.Instance != null)
+                DebugManager.Log("Called LoadSave(): No save file found. Setting up new save data.");
             Data = new SaveData();
             return null;
         }
@@ -120,7 +132,8 @@ public partial class Save
         int[] blockList = blocks.Cast<Block>().Select(block => ParseBlockToInt(block)).ToArray();
         Data.Chunks[(position.X,position.Y)] = blockList;
         //GD.Print($"Stored chunk at {position}");
-        DebugManager.Log($"Stored chunk at {position}");
+        if (DebugManager.Instance != null)
+            DebugManager.Log($"Stored chunk at {position}");
     }
 
     public Block[,,] LoadChunkBlocksOrNull(Vector2I position)
@@ -144,7 +157,8 @@ public partial class Save
         }
 
         //GD.Print($"Loaded chunk at {position}");
-        DebugManager.Log($"Loaded chunk at {position}");
+        if (DebugManager.Instance != null)
+            DebugManager.Log($"Loaded chunk at {position}");
         return blocks;
     }
 }
