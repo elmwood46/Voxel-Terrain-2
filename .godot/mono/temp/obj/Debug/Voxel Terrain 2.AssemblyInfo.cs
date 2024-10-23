@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Voxel Terrain 2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+39eec15e393b9c034cb29fb77f5b075b995451de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a4520c0a611419d50299b744ef14e06a60879ae1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Voxel Terrain 2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Voxel Terrain 2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
