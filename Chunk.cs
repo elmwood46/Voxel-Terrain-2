@@ -88,6 +88,12 @@ public partial class Chunk : StaticBody3D
 					var globalBlockPosition = ChunkPosition * new Vector2I(Dimensions.X, Dimensions.Z) + new Vector2I(x, z);
 					var groundHeight = (int)(0.05f * Dimensions.Y + 4f*((Noise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) + 1f) / 2f));
 
+					// generating origin chunk - set player spawn positon
+					if (chunkId == Vector2I.Zero && y==groundHeight && x==Dimensions.X/2 && z==Dimensions.Z/2) {
+						genWalls = false;
+						CallDeferred(nameof(SetPlayerSpawnY), (float)(groundHeight+2));
+					}
+
 					if (y == 0) {
 						block = BlockManager.Instance.Lava;
 					}
@@ -103,10 +109,9 @@ public partial class Chunk : StaticBody3D
 					{
 						block = BlockManager.Instance.Grass;
 
-						
 						// spawn a tree over a grass block
 						int _margin = 2;
-						if (!genWalls && x > _margin && x < (Dimensions.X - _margin) && z > _margin && z < (Dimensions.Z - _margin)) // chunk margin of 2 blocks
+						if (!genWalls && chunkId != Vector2I.Zero && x > _margin && x < (Dimensions.X - _margin) && z > _margin && z < (Dimensions.Z - _margin)) // chunk margin of 2 blocks
 						{
 							float _xoffset = (float)(x-Dimensions.X/2);
 							float _zoffset = (float)(z-Dimensions.Z/2);
@@ -150,6 +155,11 @@ public partial class Chunk : StaticBody3D
 			}
 		}
 		SaveManager.Instance.SaveChunk(chunkId, _blocks);
+
+	}
+
+	private void SetPlayerSpawnY(float y) {
+		Player.Instance.Position = new Vector3(0, y, 0);
 	}
 
 	public void Update()
@@ -273,5 +283,10 @@ public partial class Chunk : StaticBody3D
 	{
 		_blocks[blockPosition.X, blockPosition.Y, blockPosition.Z] = block;
 		Update();
+	}
+
+	public Block GetBlock(Vector3I blockPosition)
+	{
+		return _blocks[blockPosition.X, blockPosition.Y, blockPosition.Z];
 	}
 }

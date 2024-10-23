@@ -70,12 +70,19 @@ public partial class Player : CharacterBody3D
 
 			if (Input.IsActionJustPressed("Break"))
 			{
-				chunk.SetBlock((Vector3I)(intBlockPosition - chunk.GlobalPosition), BlockManager.Instance.Air);
+				// can't break lava
+				if (chunk.GetBlock((Vector3I)(intBlockPosition - chunk.GlobalPosition)) != BlockManager.Instance.Lava)
+					chunk.SetBlock((Vector3I)(intBlockPosition - chunk.GlobalPosition), BlockManager.Instance.Air);
 			}
 
 			if (Input.IsActionJustPressed("Place"))
 			{
 				ChunkManager.Instance.SetBlock((Vector3I)(intBlockPosition + RayCast.GetCollisionNormal()), BlockManager.Instance.Stone);
+			}
+
+			if (Input.IsActionJustPressed("debug_reload"))
+			{
+				GetTree().ReloadCurrentScene();
 			}
 		}
 		else
