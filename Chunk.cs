@@ -32,7 +32,9 @@ public partial class Chunk : StaticBody3D
 	private static readonly int[] _back = new int[] { 7, 5, 4, 6 };
 	private static readonly int[] _front = new int[] { 2, 0, 1, 3 };
 
-	private SurfaceTool _surfaceTool = new();
+	private ArrayMesh _arrayMesh = new ArrayMesh();
+	private SurfaceTool _regularSurfaceTool = new();
+	private SurfaceTool _lavaSurfaceTool = new();
 
 	private Block[,,] _blocks = new Block[Dimensions.X, Dimensions.Y, Dimensions.Z];
 
@@ -84,9 +86,12 @@ public partial class Chunk : StaticBody3D
 					Block block;
 
 					var globalBlockPosition = ChunkPosition * new Vector2I(Dimensions.X, Dimensions.Z) + new Vector2I(x, z);
-					var groundHeight = (int)(0.15f * Dimensions.Y * ((Noise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) + 1f) / 2f));
+					var groundHeight = (int)(0.05f * Dimensions.Y + 4f*((Noise.GetNoise2D(globalBlockPosition.X, globalBlockPosition.Y) + 1f) / 2f));
 
-					if (y < groundHeight / 2)
+					if (y == 0) {
+						block = BlockManager.Instance.Lava;
+					}
+					else if (y < groundHeight / 2)
 					{
 						block = BlockManager.Instance.Stone;
 					}
@@ -149,7 +154,8 @@ public partial class Chunk : StaticBody3D
 
 	public void Update()
 	{
-		_surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
+		_regularSurfaceTool.Begin(Mesh.PrimitiveType.Triangles);
+		_lavaSurfaceTool.Begin(Mesh.PrimitiveType.Triangles);
 
 		for (int x = 0; x < Dimensions.X; x++)
 		{
@@ -162,11 +168,23 @@ public partial class Chunk : StaticBody3D
 			}
 		}
 
-		_surfaceTool.SetMaterial(BlockManager.Instance.ChunkMaterial);
-		var mesh = _surfaceTool.Commit();
+		_arrayMesh.ClearSurfaces();
 
-		MeshInstance.Mesh = mesh;
-		CollisionShape.Shape = mesh.CreateTrimeshShape();
+		_regularSurfaceTool.SetMaterial(BlockManager.Instance.ChunkMaterial);
+		var mesh = _regularSurfaceTool.Commit();
+		var arrays = mesh.SurfaceGetArrays(0);
+		_arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+
+		_lavaSurfaceTool.SetMaterial(BlockManager.Instance.LavaShaderMaterial);
+		var lavaMesh = _lavaSurfaceTool.Commit();
+		var lavArrays = lavaMesh.SurfaceGetArrays(0);
+		_arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, lavArrays);
+
+		_arrayMesh.SurfaceSetMaterial(0, BlockManager.Instance.ChunkMaterial);
+		_arrayMesh.SurfaceSetMaterial(1, BlockManager.Instance.LavaShaderMaterial);
+
+		MeshInstance.Mesh = _arrayMesh;
+		CollisionShape.Shape = MeshInstance.Mesh.CreateTrimeshShape();
 
 		SaveManager.Instance.SaveChunk(ChunkPosition, _blocks); // Save the chunk after updating the _blocks[,,] and mesh
 	}
@@ -177,38 +195,40 @@ public partial class Chunk : StaticBody3D
 
 		if (block == BlockManager.Instance.Air) return;
 
+		SurfaceTool currentSurfaceTool = block == BlockManager.Instance.Lava ? _lavaSurfaceTool : _regularSurfaceTool;
+
 		if (CheckTransparent(blockPosition + Vector3I.Up))
 		{
-			CreateFaceMesh(_top, blockPosition, block.TopTexture ?? block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _top, blockPosition, block.TopTexture ?? block.Texture);
 		}
 
 		if (CheckTransparent(blockPosition + Vector3I.Down))
 		{
-			CreateFaceMesh(_bottom, blockPosition, block.BottomTexture ?? block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _bottom, blockPosition, block.BottomTexture ?? block.Texture);
 		}
 
 		if (CheckTransparent(blockPosition + Vector3I.Left))
 		{
-			CreateFaceMesh(_left, blockPosition, block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _left, blockPosition, block.Texture);
 		}
 
 		if (CheckTransparent(blockPosition + Vector3I.Right))
 		{
-			CreateFaceMesh(_right, blockPosition, block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _right, blockPosition, block.Texture);
 		}
 
 		if (CheckTransparent(blockPosition + Vector3I.Forward))
 		{
-			CreateFaceMesh(_front, blockPosition, block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _front, blockPosition, block.Texture);
 		}
 
 		if (CheckTransparent(blockPosition + Vector3I.Back))
 		{
-			CreateFaceMesh(_back, blockPosition, block.Texture);
+			CreateFaceMesh(currentSurfaceTool, _back, blockPosition, block.Texture);
 		}
 	}
 
-	private void CreateFaceMesh(int[] face, Vector3I blockPosition, Texture2D texture)
+	private void CreateFaceMesh(SurfaceTool _surfaceTool, int[] face, Vector3I blockPosition, Texture2D texture)
 	{
 		var texturePosition = BlockManager.Instance.GetTextureAtlasPosition(texture);
 		var textureAtlasSize = BlockManager.Instance.TextureAtlasSize;
