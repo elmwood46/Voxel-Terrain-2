@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cutsjjheb6ahm"]
+[gd_scene load_steps=28 format=3 uid="uid://cutsjjheb6ahm"]
 
 [ext_resource type="Script" path="res://ChunkManager.cs" id="1_0ir14"]
 [ext_resource type="Script" path="res://BlockManager.cs" id="1_1vhrc"]
@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://ucdxbqc40vcn" path="res://BlockTextures/trunkBase.png" id="9_48atv"]
 [ext_resource type="Texture2D" uid="uid://c4vrgh206oxx4" path="res://BlockTextures/trunk.png" id="10_vwk1l"]
 [ext_resource type="Texture2D" uid="uid://b0m7q81wfwglb" path="res://BlockTextures/bricks.png" id="11_xoj02"]
+[ext_resource type="Texture2D" uid="uid://pm4k47osdsfh" path="res://BlockTextures/lava.png" id="12_jp6bq"]
+[ext_resource type="Material" uid="uid://cc8jelgps50k7" path="res://shaders/LavaShader.tres" id="13_ry1cx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2uccx"]
 
@@ -23,6 +25,8 @@ sky_material = SubResource("ProceduralSkyMaterial_2uccx")
 [sub_resource type="Environment" id="Environment_oic5h"]
 background_mode = 2
 sky = SubResource("Sky_wtvrs")
+glow_enabled = true
+glow_bloom = 0.02
 
 [sub_resource type="Resource" id="Resource_xxcol"]
 script = ExtResource("2_7x5ym")
@@ -63,6 +67,12 @@ Texture = ExtResource("11_xoj02")
 TopTexture = ExtResource("11_xoj02")
 BottomTexture = ExtResource("11_xoj02")
 
+[sub_resource type="Resource" id="Resource_ntjqf"]
+script = ExtResource("2_7x5ym")
+Texture = ExtResource("12_jp6bq")
+TopTexture = ExtResource("12_jp6bq")
+BottomTexture = ExtResource("12_jp6bq")
+
 [node name="Level" type="Node3D"]
 
 [node name="DebugMenu" parent="." node_paths=PackedStringArray("debugLogView") instance=ExtResource("1_piuhj")]
@@ -80,13 +90,15 @@ Grass = SubResource("Resource_b2y18")
 Leaves = SubResource("Resource_dq5wt")
 Trunk = SubResource("Resource_8t0b1")
 Brick = SubResource("Resource_d3ajv")
+Lava = SubResource("Resource_ntjqf")
+LavaShaderMaterial = ExtResource("13_ry1cx")
 
 [node name="ChunkManager" type="Node" parent="."]
 script = ExtResource("1_0ir14")
 ChunkScene = ExtResource("1_peckr")
 
 [node name="Player" parent="." instance=ExtResource("8_we1o3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 81.0585, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 372.059, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.904552, -0.358104, 0.231402, 0, 0.542735, 0.839904, -0.426363, -0.759737, 0.490932, 0, 33.2873, 0)

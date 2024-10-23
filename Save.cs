@@ -14,7 +14,8 @@ public enum BID
     Grass,
     Leaves,
     Trunk,
-    Brick
+    Brick,
+    Lava
 }
 
 public partial class Save
@@ -52,6 +53,7 @@ public partial class Save
         else if (block == BlockManager.Instance.Leaves) return (int)BID.Leaves;
         else if (block == BlockManager.Instance.Trunk) return (int)BID.Trunk;
         else if (block == BlockManager.Instance.Brick) return (int)BID.Brick;
+        else if (block == BlockManager.Instance.Lava) return (int)BID.Lava;
         else throw new Exception($"Block {block} not found in BlockManager.");
     }
 
@@ -63,6 +65,7 @@ public partial class Save
         else if (i == (int)BID.Leaves) return BlockManager.Instance.Leaves;
         else if (i == (int)BID.Trunk) return BlockManager.Instance.Trunk;
         else if (i == (int)BID.Brick) return BlockManager.Instance.Brick;
+        else if (i == (int)BID.Lava) return BlockManager.Instance.Lava;
         else throw new Exception($"Block {i} not found in BlockManager.");
     }
 
