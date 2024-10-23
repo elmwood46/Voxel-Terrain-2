@@ -22,10 +22,14 @@ public partial class BlockManager : Node
 
 	[Export] public Block Brick { get; set; }
 
+	[Export] public Block Lava { get; set; }
+
 	private readonly Dictionary<Texture2D, Vector2I> _atlasLookup = new();
 
 	private int _gridWidth = 3;
 	private int _gridHeight;
+
+	[Export] public ShaderMaterial LavaShaderMaterial { get; set; }
 
 	public Vector2I BlockTextureSize { get; } = new(16, 16);
 
@@ -39,7 +43,7 @@ public partial class BlockManager : Node
 	{
 		Instance = this;
 
-		var blockTextures = new Block[] { Air, Stone, Dirt, Grass, Leaves, Trunk, Brick }.SelectMany(block => block.Textures).Where(texture => texture != null).Distinct().ToArray();
+		var blockTextures = new Block[] { Air, Stone, Dirt, Grass, Leaves, Trunk, Brick, Lava }.SelectMany(block => block.Textures).Where(texture => texture != null).Distinct().ToArray();
 
 		for (int i = 0; i < blockTextures.Length; i++)
 		{
