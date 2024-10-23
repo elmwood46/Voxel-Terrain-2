@@ -1,4 +1,4 @@
-
+The tutorial series from xen-42: https://www.youtube.com/watch?v=TM3r2V4980k  
 ## Requires MessagePack:
 ```
 dotnet add package MessagePack
